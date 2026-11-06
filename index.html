@@ -1,171 +1,104 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SMART TRADER AI</title>
-
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#07110d">
+<title>SMART TRADER AI | Trading Terminal</title>
 <style>
-*{box-sizing:border-box}
-body{
- margin:0;background:#080d0b;color:white;
- font-family:Arial,sans-serif;
-}
-header{
- background:#101a14;padding:20px;
- border-bottom:1px solid #1c3827;
-}
-h1{color:#00ed83;font-size:25px;margin:0}
-header p{color:#9aafa2;font-size:12px}
-.container{padding:15px;max-width:1000px;margin:auto}
-.card{
- background:#111b15;border:1px solid #24412e;
- border-radius:12px;padding:16px;margin-bottom:15px;
-}
-h2{font-size:17px;color:#00ed83;margin-top:0}
-.grid{
- display:grid;grid-template-columns:repeat(2,1fr);gap:12px
-}
-.metric{font-size:23px;font-weight:bold;margin-top:8px}
-small{color:#9aafa2}
-select,button{
- background:#17251b;color:white;border:1px solid #326341;
- padding:12px;border-radius:7px;font-size:14px;
-}
-button{cursor:pointer}
-button.primary{background:#00b96b;color:#001a0c;font-weight:bold}
-button:active{opacity:.7}
-input{background:#17251b;color:white;border:1px solid #326341;padding:12px;border-radius:7px;width:100%}
-.chart{width:100%;height:430px;border:0;border-radius:8px}
-.signal{font-size:25px;font-weight:bold;color:#ffc94a}
-.green{color:#00ed83}
-.red{color:#ff6565}
-footer{text-align:center;color:#718477;padding:20px;font-size:12px}
+:root{--bg:#07100c;--panel:#101d16;--panel2:#14251b;--line:#244333;--green:#00d084;--green2:#00a968;--text:#edf7f1;--muted:#91a79a;--red:#ff6575;--gold:#ffc857}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 Arial, sans-serif}
+header{position:sticky;top:0;z-index:10;background:#09140e;border-bottom:1px solid var(--line);padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{font-size:21px;font-weight:800;color:var(--green);letter-spacing:.3px}.sub{font-size:11px;color:var(--muted);letter-spacing:1px}
+.menu{display:flex;gap:8px;flex-wrap:wrap}.menu a{color:#c9d9cf;text-decoration:none;padding:8px 10px;border:1px solid transparent;border-radius:9px;font-size:13px}.menu a:hover,.menu a.active{border-color:var(--line);background:var(--panel2);color:var(--green)}
+main{max-width:1200px;margin:auto;padding:18px}.welcome{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:10px 0 18px}.welcome h1{font-size:24px;margin:0}.muted{color:var(--muted)}.badge{border:1px solid var(--line);border-radius:20px;padding:6px 11px;color:var(--green);font-size:12px}
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}.card{background:var(--panel);border:1px solid var(--line);border-radius:15px;padding:17px;min-width:0}.card h2{font-size:16px;color:var(--green);margin:0 0 14px;text-transform:uppercase}.span-12{grid-column:span 12}.span-8{grid-column:span 8}.span-7{grid-column:span 7}.span-6{grid-column:span 6}.span-5{grid-column:span 5}.span-4{grid-column:span 4}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.stat{background:var(--panel2);padding:13px;border-radius:11px}.stat small{display:block;color:var(--muted);font-size:12px}.stat strong{font-size:20px;display:block;margin-top:5px}.green{color:var(--green)}.gold{color:var(--gold)}
+.chart-wrap{height:510px;min-height:380px;background:#050806;border-radius:10px;overflow:hidden}.tradingview-widget-container,.tradingview-widget-container__widget{height:100%;width:100%}
+.watchlist{display:grid;gap:7px}.pair{display:flex;justify-content:space-between;align-items:center;padding:10px;border-radius:9px;background:var(--panel2);border:1px solid transparent;cursor:pointer}.pair:hover,.pair.selected{border-color:var(--green)}.pair small{color:var(--muted);display:block}.up{color:var(--green)}.down{color:var(--red)}
+.signal{background:var(--panel2);padding:15px;border-radius:11px}.signal strong{font-size:24px;color:var(--gold)}.signal p{margin:7px 0;color:var(--muted)}
+.indicators{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.indicator{background:var(--panel2);padding:12px;border-radius:10px}.indicator small{display:block;color:var(--muted)}.indicator b{display:block;margin-top:5px}
+button,select,input{font:inherit}button{background:var(--green2);color:#03130b;border:0;padding:11px 15px;border-radius:9px;font-weight:700;cursor:pointer}button.secondary{background:var(--panel2);color:var(--text);border:1px solid var(--line)}select,input{background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:9px;padding:10px;width:100%}.row{display:flex;gap:10px;align-items:center}.row>*{flex:1}
+.notice{font-size:12px;color:var(--muted);line-height:1.5}.risk-result{margin-top:10px;color:var(--green);font-weight:700}
+footer{text-align:center;color:var(--muted);padding:28px 10px;font-size:12px}
+@media(max-width:800px){header{align-items:flex-start;flex-direction:column}.menu{width:100%;overflow-x:auto;flex-wrap:nowrap}.menu a{white-space:nowrap}.span-8,.span-7,.span-6,.span-5,.span-4{grid-column:span 12}.stats{grid-template-columns:repeat(2,1fr)}.chart-wrap{height:430px}.welcome h1{font-size:20px}}
 </style>
 </head>
-
 <body>
-
 <header>
-<h1>SMART TRADER AI</h1>
-<p>INTELLIGENT DERIV TRADING TERMINAL</p>
+ <div><div class="brand">SMART TRADER AI</div><div class="sub">INTELLIGENT DERIV TRADING TERMINAL</div></div>
+ <nav class="menu"><a class="active" href="#dashboard">Dashboard</a><a href="#markets">Markets</a><a href="#chart">Charts</a><a href="#analysis">AI Analyst</a><a href="#risk">Risk tools</a></nav>
 </header>
-
-<div class="container">
-
-<div class="card">
-<h2>TRADING DASHBOARD</h2>
-<div class="grid">
-<div><small>PLATFORM</small><div class="metric green">ONLINE</div></div>
-<div><small>MARKET</small><div class="metric">FOREX</div></div>
-</div>
-</div>
-
-<div class="card">
-<h2>MARKET CHART</h2>
-<select id="market" onchange="changeMarket()">
-<option value="OANDA:EURUSD">EUR/USD</option>
-<option value="OANDA:GBPUSD">GBP/USD</option>
-<option value="OANDA:USDJPY">USD/JPY</option>
-<option value="OANDA:XAUUSD">GOLD</option>
-</select>
-<div id="tradingview_chart" style="height:430px;margin-top:15px"></div>
-</div>
-
-<div class="card">
-<h2>AI MARKET ANALYST</h2>
-<p id="analysis">Market analysis is not connected yet.</p>
-<button class="primary" onclick="analyse()">ANALYSE MARKET</button>
-</div>
-
-<div class="card">
-<h2>TRADING SIGNAL</h2>
-<div class="signal" id="signal">WAIT</div>
-<p id="signalInfo">No live trading signal available.</p>
-<small>Demo interface only. Signals are not live predictions.</small>
-</div>
-
-<div class="card">
-<h2>TECHNICAL INDICATORS</h2>
-<div class="grid">
-<div><small>EMA 20</small><p>Awaiting data</p></div>
-<div><small>RSI 14</small><p>Awaiting data</p></div>
-<div><small>MACD</small><p>Awaiting data</p></div>
-<div><small>ATR</small><p>Awaiting data</p></div>
-</div>
-</div>
-
-<div class="card">
-<h2>DERIV ACCOUNT</h2>
-<p>Connect your Deriv account in a future version.</p>
-<a href="https://app.deriv.com/" target="_blank">
-<button class="primary">OPEN DERIV</button>
-</a>
-</div>
-
-<div class="card">
-<h2>RISK MANAGEMENT</h2>
-<label>Demo trade amount</label>
-<input type="number" id="amount" value="1" min="0.35" step="0.01">
-<p id="risk">Demo amount: $1</p>
-<button onclick="calculateRisk()">CALCULATE</button>
-</div>
-
-</div>
-
-<footer>
-SMART TRADER AI © 2026<br>
-Trading involves risk. No profits are guaranteed.
-</footer>
-
+<main>
+ <section class="welcome" id="dashboard"><div><h1>Trading dashboard</h1><div class="muted">Market overview and analysis workspace</div></div><span class="badge">● TERMINAL ONLINE</span></section>
+ <section class="card span-12" style="margin-bottom:14px">
+  <div class="stats">
+   <div class="stat"><small>Selected market</small><strong id="selectedMarket">EUR/USD</strong></div>
+   <div class="stat"><small>Chart provider</small><strong>TradingView</strong></div>
+   <div class="stat"><small>Analysis status</small><strong class="gold">Not connected</strong></div>
+   <div class="stat"><small>Trading mode</small><strong>Analysis only</strong></div>
+  </div>
+ </section>
+ <section class="grid">
+  <div class="card span-8" id="chart">
+   <div class="row" style="margin-bottom:12px"><h2 style="margin:0">Live market chart</h2><select id="symbolSelect" aria-label="Choose market"><option value="FX:EURUSD">EUR/USD</option><option value="FX:GBPUSD">GBP/USD</option><option value="FX:USDJPY">USD/JPY</option><option value="OANDA:XAUUSD">GOLD</option><option value="FX:AUDUSD">AUD/USD</option><option value="BINANCE:BTCUSDT">BTC/USDT</option></select></div>
+   <div class="chart-wrap"><div id="tv_chart" class="tradingview-widget-container"><div class="tradingview-widget-container__widget"></div></div></div>
+   <p class="notice">Chart supplied by TradingView. Quotes and market sessions depend on the provider. This page does not execute trades.</p>
+  </div>
+  <aside class="card span-4" id="markets"><h2>Market watchlist</h2><div class="watchlist" id="watchlist">
+   <div class="pair selected" data-symbol="FX:EURUSD"><div>EUR/USD<small>Euro / US Dollar</small></div><b>Open chart ↗</b></div>
+   <div class="pair" data-symbol="FX:GBPUSD"><div>GBP/USD<small>Pound / US Dollar</small></div><b>Open chart ↗</b></div>
+   <div class="pair" data-symbol="FX:USDJPY"><div>USD/JPY<small>US Dollar / Yen</small></div><b>Open chart ↗</b></div>
+   <div class="pair" data-symbol="OANDA:XAUUSD"><div>GOLD<small>Gold / US Dollar</small></div><b>Open chart ↗</b></div>
+   <div class="pair" data-symbol="FX:AUDUSD"><div>AUD/USD<small>Australian Dollar / US Dollar</small></div><b>Open chart ↗</b></div>
+   <div class="pair" data-symbol="BINANCE:BTCUSDT"><div>BTC/USDT<small>Bitcoin / Tether</small></div><b>Open chart ↗</b></div>
+  </div></aside>
+  <section class="card span-7" id="analysis"><h2>AI market analyst</h2>
+   <div class="signal"><strong>WAIT</strong><p>AI analysis engine is not connected yet. No BUY or SELL recommendation is being generated.</p></div>
+   <p class="notice" style="margin-top:12px">The chart is live from its provider, but this panel does not yet read that chart's prices. A secure market-data feed and analysis service must be connected before real calculated signals can appear.</p>
+   <button class="secondary" id="analysisInfo">Analysis connection status</button><div id="analysisMessage" class="notice" aria-live="polite" style="margin-top:9px"></div>
+  </section>
+  <section class="card span-5"><h2>Technical indicators</h2>
+   <div class="indicators">
+    <div class="indicator"><small>EMA 20</small><b>Chart study available</b></div>
+    <div class="indicator"><small>RSI 14</small><b>Chart study available</b></div>
+    <div class="indicator"><small>MACD</small><b>Chart study available</b></div>
+    <div class="indicator"><small>ATR</small><b>Not calculated</b></div>
+   </div>
+   <p class="notice" style="margin-top:12px">Use the chart's Indicators menu to add EMA, RSI and MACD. These values are not yet calculated by SMART TRADER AI itself.</p>
+  </section>
+  <section class="card span-6" id="risk"><h2>Risk management calculator</h2>
+   <label class="notice" for="balance">Account balance (USD)</label><input id="balance" type="number" min="0" step="0.01" value="100">
+   <div class="row" style="margin-top:10px"><div><label class="notice" for="riskPct">Risk per trade (%)</label><input id="riskPct" type="number" min="0" max="100" step="0.1" value="1"></div><div><label class="notice" for="stopPct">Stop distance (%)</label><input id="stopPct" type="number" min="0.01" max="100" step="0.1" value="1"></div></div>
+   <button id="calculate" style="margin-top:12px">Calculate risk</button><div id="riskResult" class="risk-result" aria-live="polite">Maximum planned loss: $1.00</div>
+   <p class="notice">Illustrative calculator only. It does not calculate broker-specific lot sizes, contract sizes, fees or slippage.</p>
+  </section>
+  <section class="card span-6"><h2>Deriv account</h2><p>Connect to Deriv only through its official authorization flow in a future version.</p><a href="https://deriv.com/" target="_blank" rel="noopener"><button>Open Deriv</button></a><p class="notice" style="margin-top:10px">Do not enter or share your Deriv password or API token on this static website or in GitHub files.</p></section>
+ </section>
+</main>
+<footer>SMART TRADER AI © 2026<br>Educational analysis interface. Trading involves risk; losses are possible. No profits are guaranteed.</footer>
 <script>
-function loadChart(){
- const old=document.getElementById("tvscript");
- if(old)old.remove();
-
- document.getElementById("tradingview_chart").innerHTML="";
-
- const script=document.createElement("script");
- script.id="tvscript";
- script.src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js";
- script.async=true;
- script.innerHTML=JSON.stringify({
-  autosize:true,
-  symbol:document.getElementById("market").value,
-  interval:"15",
-  timezone:"Etc/UTC",
-  theme:"dark",
-  style:"1",
-  locale:"en",
-  allow_symbol_change:true,
-  calendar:false,
-  support_host:"https://www.tradingview.com"
- });
- document.getElementById("tradingview_chart").appendChild(script);
+const chart=document.getElementById('tv_chart');
+function loadChart(symbol){
+ document.getElementById('symbolSelect').value=symbol;
+ const labels={'FX:EURUSD':'EUR/USD','FX:GBPUSD':'GBP/USD','FX:USDJPY':'USD/JPY','OANDA:XAUUSD':'GOLD','FX:AUDUSD':'AUD/USD','BINANCE:BTCUSDT':'BTC/USDT'};
+ document.getElementById('selectedMarket').textContent=labels[symbol]||symbol;
+ document.querySelectorAll('.pair').forEach(p=>p.classList.toggle('selected',p.dataset.symbol===symbol));
+ chart.innerHTML='<div class="tradingview-widget-container__widget"></div>';
+ const s=document.createElement('script');s.type='text/javascript';s.async=true;s.src='https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';
+ s.text=JSON.stringify({autosize:true,symbol:symbol,interval:'15',timezone:'Etc/UTC',theme:'dark',style:'1',locale:'en',allow_symbol_change:true,calendar:false,hide_side_toolbar:false,withdateranges:true,details:false,hotlist:false,studies:['STD;EMA','STD;RSI','STD;MACD'],support_host:'https://www.tradingview.com'});
+ chart.appendChild(s);
 }
-
-function changeMarket(){loadChart()}
-
-function analyse(){
- document.getElementById("analysis").innerText=
- "The AI analysis engine is not connected yet. Live market data and technical indicators will be integrated in the next version. Do not use demo signals to trade.";
- document.getElementById("signal").innerText="WAIT";
- document.getElementById("signalInfo").innerText=
- "No verified live market signal available.";
-}
-
-function calculateRisk(){
- const amount=Number(document.getElementById("amount").value);
- if(!Number.isFinite(amount)||amount<=0){
-  document.getElementById("risk").innerText="Enter a valid amount.";
-  return;
- }
- document.getElementById("risk").innerText=
- "Demo amount: $"+amount.toFixed(2);
-}
-
-loadChart();
+document.getElementById('symbolSelect').addEventListener('change',e=>loadChart(e.target.value));
+document.querySelectorAll('.pair').forEach(p=>p.addEventListener('click',()=>{loadChart(p.dataset.symbol);document.getElementById('chart').scrollIntoView({behavior:'smooth'});}));
+loadChart('FX:EURUSD');
+document.getElementById('calculate').addEventListener('click',()=>{
+ const b=Number(document.getElementById('balance').value),r=Number(document.getElementById('riskPct').value),s=Number(document.getElementById('stopPct').value);
+ const out=document.getElementById('riskResult');
+ if(!Number.isFinite(b)||!Number.isFinite(r)||!Number.isFinite(s)||b<=0||r<=0||r>100||s<=0||s>100){out.textContent='Enter a balance above 0 and valid percentages.';return;}
+ const loss=b*r/100;out.textContent='Maximum planned loss: $'+loss.toFixed(2)+' (position value estimate: $'+(loss/(s/100)).toFixed(2)+')';
+});
+document.getElementById('analysisInfo').addEventListener('click',()=>{document.getElementById('analysisMessage').textContent='Not connected: a secure backend and market-data API are still required. No live trading signal is available.';});
 </script>
-
 </body>
-  </html>
+</html>
